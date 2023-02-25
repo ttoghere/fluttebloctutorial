@@ -1,5 +1,7 @@
+import 'package:fluttebloctutorial/blocs/app_counter/app_counter_bloc.dart';
 import 'package:fluttebloctutorial/cubits/app_counter/app_counter_cubit.dart';
-import 'package:fluttebloctutorial/screens/bloc_listener_consumer.dart';
+import 'package:fluttebloctutorial/blocs/theme/theme_bloc.dart';
+import 'package:fluttebloctutorial/screens/theme_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -17,10 +19,23 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => AppCounterCubit(),
         ),
+        BlocProvider(
+          create: (context) => AppCounterBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ThemeBloc(),
+        ),
       ],
-      child: const MaterialApp(
-        title: 'Material App',
-        home: BlocListenerConsumer(),
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: (context, state) {
+          return MaterialApp(
+            title: 'Material App',
+            theme: state.appTheme == AppTheme.light
+                ? ThemeData()
+                : ThemeData.dark(),
+            home: const ThemeBlocScreen(),
+          );
+        },
       ),
     );
   }

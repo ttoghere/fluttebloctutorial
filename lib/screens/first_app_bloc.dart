@@ -1,9 +1,9 @@
-import 'package:fluttebloctutorial/cubits/app_counter/app_counter_cubit.dart';
+import 'package:fluttebloctutorial/blocs/app_counter/app_counter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CubitBlocListenerConsumer extends StatelessWidget {
-  const CubitBlocListenerConsumer({super.key});
+class BlocBlocListenerConsumer extends StatelessWidget {
+  const BlocBlocListenerConsumer({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class CubitBlocListenerConsumer extends StatelessWidget {
       ),
       //Provides a cleaner code than listener & builder
       //BlocConsumer is the fusion of listener & builder
-      body: BlocConsumer<AppCounterCubit, AppCounterState>(
+      body: BlocConsumer<AppCounterBloc, AppCounterState>(
         // //Return true false for calling listener
         // listenWhen: (previous, current) {
         //  if else etc.
@@ -55,14 +55,18 @@ class CubitBlocListenerConsumer extends StatelessWidget {
                 ElevatedButton.icon(
                   onPressed: () {
                     //Access to Bloc/Cubit
-                    BlocProvider.of<AppCounterCubit>(context).increment();
+                    //Diffrence of bloc against cubit is
+                    //Bloc is more complex and for actions you have to call event
+                    //With .add(event);
+                    context.read<AppCounterBloc>().add(IncrementCounterEvent());
                   },
                   icon: const Icon(Icons.add),
                   label: const Text("Increase 1"),
                 ),
                 ElevatedButton.icon(
                   onPressed: () {
-                    context.read<AppCounterCubit>().decrement();
+                    BlocProvider.of<AppCounterBloc>(context)
+                        .add(DecrementCounterEvent());
                   },
                   icon: const Icon(Icons.remove),
                   label: const Text("Decrease 1"),
