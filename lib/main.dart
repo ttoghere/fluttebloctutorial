@@ -1,10 +1,11 @@
 import 'package:fluttebloctutorial/blocs/app_counter/app_counter_bloc.dart';
+import 'package:fluttebloctutorial/blocs/color/color_bloc.dart';
+import 'package:fluttebloctutorial/blocs/color_counter/color_counter_bloc.dart';
 import 'package:fluttebloctutorial/cubits/app_counter/app_counter_cubit.dart';
 import 'package:fluttebloctutorial/blocs/theme/theme_bloc.dart';
 import 'package:fluttebloctutorial/cubits/color/color_cubit.dart';
 import 'package:fluttebloctutorial/cubits/color_counter/color_counter_cubit.dart';
-import 'package:fluttebloctutorial/screens/cubits_communication.dart';
-import 'package:fluttebloctutorial/screens/theme_bloc.dart';
+import 'package:fluttebloctutorial/screens/blocs_communication.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,9 +29,17 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ThemeBloc(),
         ),
-        BlocProvider(create: (context) => ColorCubit()),
+        BlocProvider(
+          create: (context) => ColorCubit(),
+        ),
         BlocProvider(
           create: (context) => ColorCounterCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ColorCounterBloc(),
+        ),
+        BlocProvider(
+          create: (context) => ColorBloc(),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeState>(
@@ -40,7 +49,7 @@ class MyApp extends StatelessWidget {
             theme: state.appTheme == AppTheme.light
                 ? ThemeData()
                 : ThemeData.dark(),
-            home:  ChangeColor(),
+            home: BlocChangeColor(),
           );
         },
       ),
